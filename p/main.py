@@ -12,7 +12,7 @@ import mimetypes  # Importa mimetypes per aggiungere supporto MIME
 # MIME type per i file .wasm
 mimetypes.add_type('application/wasm', '.wasm')
 
-# Controllo per la piattaforma Emscripten
+# Controllo per la piattaforma Emscripten (WebAssembly)
 if sys.platform == "emscripten":
     print("Running on Emscripten")
 
@@ -52,7 +52,6 @@ class RecordManager:
             best_record = self.load_best_record(user, difficulty)
             if not best_record or time < best_record['time']:
                 self.records[(user, difficulty)] = {'time': time, 'date': datetime.datetime.now().isoformat()}
-                # Salva nel localStorage usando eval() per eseguire codice JS
                 eval(f"window.localStorage.setItem('puzzle_records', '{json.dumps(self.records)}')")
                 print(f"Record salvato per {user} in difficoltà {difficulty}: {time:.2f}s")
         except Exception as e:
@@ -228,7 +227,7 @@ class Puzzle:
         else:
             self.best_time_text = ""
 
-    def run(self):
+    async def run(self):
         """Avvia il ciclo principale del gioco."""
         while True:
             self.screen.blit(self.background_image, (0, 0))
@@ -241,11 +240,13 @@ class Puzzle:
                     exit()
 
                 if self.start_button.click(event):
-                    self.difficulty_selection()
+                    await self.difficulty_selection()
 
             pygame.display.flip()
 
-    def difficulty_selection(self):
+            await asyncio.sleep(0)  # Restituisce il controllo al main loop
+
+    async def difficulty_selection(self):
         """Gestisce la selezione della difficoltà."""
         while not self.game_started:
             self.screen.blit(self.background_image, (0, 0))
@@ -260,21 +261,22 @@ class Puzzle:
                     exit()
 
                 if self.easy_button.click(event):
-                    self.start_game("easy")
+                    await self.start_game("easy")
 
                 if self.medium_button.click(event):
-                    self.start_game("medium")
+                    await self.start_game("medium")
 
                 if self.hard_button.click(event):
-                    self.start_game("hard")
+                    await self.start_game("hard")
 
                 if self.exit_button.click(event):
                     pygame.quit()
                     exit()
 
             pygame.display.flip()
+            await asyncio.sleep(0)  # Restituisce il controllo al main loop
 
-    def start_game(self, difficulty):
+    async def start_game(self, difficulty):
         """Inizia il gioco con la difficoltà selezionata."""
         self.difficulty = difficulty
         self.elapsed_time = 0
@@ -289,7 +291,7 @@ class Puzzle:
             puzzle.draw(self.screen)
 
             if self.check_win(puzzle):
-                self.end_game()
+                await self.end_game()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -305,6 +307,7 @@ class Puzzle:
 
             pygame.display.flip()
             self.clock.tick(30)
+            await asyncio.sleep(0)  # Restituisce il controllo al main loop
 
     def check_win(self, puzzle):
         """Controlla se l'utente ha vinto."""
@@ -313,7 +316,7 @@ class Puzzle:
             return True
         return False
 
-    def end_game(self):
+    async def end_game(self):
         """Gestisce la fine del gioco e il salvataggio dei record."""
         # Salva il record se esiste un nuovo miglior tempo
         self.record_manager.save_record(self.elapsed_time, self.user, self.difficulty)
@@ -322,8 +325,8 @@ class Puzzle:
         self.screen.fill((0, 0, 0))
         self.screen.blit(self.font.render(self.best_time_text, True, (255, 255, 255)), (200, 200))
         pygame.display.flip()
-        time.sleep(3)  # Aspetta un momento prima di tornare al menu principale
-        self.difficulty_selection()
+        await asyncio.sleep(3)  # Aspetta un momento prima di tornare al menu principale
+        await self.difficulty_selection()
 
 
 async def main():
@@ -337,7 +340,7 @@ async def main():
     # Usa un nome utente predefinito per il test
     user = "Player"  # Ottieni il nome utente loggato
     puzzle = Puzzle(screen, font, clock, user)
-    puzzle.run()
+    await puzzle.run()
 
 
 if __name__ == "__main__":
