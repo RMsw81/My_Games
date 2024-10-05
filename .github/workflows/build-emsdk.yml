@@ -26,11 +26,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pygbag
-          git clone https://github.com/emscripten-core/emsdk.git
-          git clone https://github.com/pygame-web/pygbag.git
-          git clone https://pygame-web.github.io/archives/0.9/pythonrc.py
 
-      # Rimuovi o modifica questa parte se non hai bisogno di scaricare pythonrc.py
+      - name: Clone emsdk and install
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+          source ./emsdk_env.sh
+
+      - name: Install pythonrc.py (if needed)
+        run: |
+          wget https://pygame-web.github.io/archives/0.9/pythonrc.py -P p/assets/games/
+
       - name: Create game assets directory
         run: mkdir -p p/assets/games/
-        # rimuovi la linea wget per pythonrc.py se non è disponibile o necessario
+
+      - name: Build game with pygbag
+        run: pygbag p/main.py
