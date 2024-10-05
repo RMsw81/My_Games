@@ -35,12 +35,11 @@ jobs:
           ./emsdk activate latest
           source ./emsdk_env.sh
 
-      - name: Install pythonrc.py (if needed)
-        run: |
-          wget https://pygame-web.github.io/archives/0.9/pythonrc.py -P p/assets/games/
-
       - name: Create game assets directory
-        run: mkdir -p p/assets/games/
+        run: |
+            mkdir -p p/img/
+            mkdir -p p/sfx/
+        
 
       - name: Build game with pygbag
         run: pygbag p/main.py
