@@ -204,18 +204,18 @@ class Puzzle:
 
     def load_assets(self):
         """Carica le risorse grafiche del gioco."""
-        self.background_image = pygame.transform.scale(load_image("p/assets/games/background.jpg"), (700, 700))
+        self.background_image = pygame.transform.scale(load_image("assets/games/background.jpg"), (700, 700))
         self.puzzle_images = {
-            "easy": pygame.transform.scale(load_image("p/assets/games/puzzle_image_easy.jpg"), (400, 400)),
-            "medium": pygame.transform.scale(load_image("p/assets/games/puzzle_image_medium.jpg"), (400, 400)),
-            "hard": pygame.transform.scale(load_image("p/assets/games/puzzle_image_hard.jpg"), (400, 400))
+            "easy": pygame.transform.scale(load_image("assets/games/puzzle_image_easy.jpg"), (400, 400)),
+            "medium": pygame.transform.scale(load_image("assets/games/puzzle_image_medium.jpg"), (400, 400)),
+            "hard": pygame.transform.scale(load_image("assets/games/puzzle_image_hard.jpg"), (400, 400))
         }
-        self.start_button = Button(pygame.transform.scale(load_image("p/assets/games/start_button.png"), (100, 45)), (290, 520))
-        self.easy_button = Button(pygame.transform.scale(load_image("p/assets/games/easy_button.png"), (100, 45)), (180, 550))
-        self.medium_button = Button(pygame.transform.scale(load_image("p/assets/games/medium_button.png"), (100, 45)), (300, 550))
-        self.hard_button = Button(pygame.transform.scale(load_image("p/assets/games/hard_button.png"), (100, 45)), (420, 550))
-        self.exit_button = Button(pygame.transform.scale(load_image("p/assets/games/exit_button.png"), (60, 35)), (510, 570))
-        self.back_button = Button(pygame.transform.scale(load_image("p/assets/games/back_button.png"), (50, 40)), (130, 570))
+        self.start_button = Button(pygame.transform.scale(load_image("assets/games/start_button.png"), (100, 45)), (290, 520))
+        self.easy_button = Button(pygame.transform.scale(load_image("assets/games/easy_button.png"), (100, 45)), (180, 550))
+        self.medium_button = Button(pygame.transform.scale(load_image("assets/games/medium_button.png"), (100, 45)), (300, 550))
+        self.hard_button = Button(pygame.transform.scale(load_image("assets/games/hard_button.png"), (100, 45)), (420, 550))
+        self.exit_button = Button(pygame.transform.scale(load_image("assets/games/exit_button.png"), (60, 35)), (510, 570))
+        self.back_button = Button(pygame.transform.scale(load_image("assets/games/back_button.png"), (50, 40)), (130, 570))
 
     def update_best_time_text(self):
         """Aggiorna il testo che mostra il miglior tempo registrato."""
