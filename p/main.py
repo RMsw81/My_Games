@@ -9,8 +9,10 @@ import sys
 import json  # Importa il modulo json per la serializzazione e deserializzazione
 import mimetypes  # Importa mimetypes per aggiungere supporto MIME
 
-# MIME type per i file .wasm
-mimetypes.add_type('application/wasm', '.wasm')
+if 'wasm' in __import__('platform').machine():
+    # MIME type per i file .wasm
+    mimetypes.add_type('application/wasm', '.wasm')
+    pass
 
 if __import__("sys").platform == "emscripten":
     from platform import window
