@@ -31,6 +31,7 @@ except pygame.error as e:
     print(f"Audio non disponibile: {e}")
     audio_enabled = False
 
+
 class RecordManager:
     def __init__(self):
         self.records = self.load_records()
@@ -61,13 +62,18 @@ class RecordManager:
         """Carica il miglior record salvato per un utente e una difficoltà."""
         return self.records.get((user, difficulty))
 
+
 def load_image(path):
     """Carica l'immagine dal percorso specificato."""
+    if not os.path.exists(path):
+        print(f"Immagine non trovata: {path}")
+        exit()
     try:
         return pygame.image.load(path)
     except pygame.error as e:
         print(f"Impossibile caricare l'immagine da {path}: {e}")
         exit()
+
 
 class Button:
     """Classe per gestire i bottoni nel gioco."""
@@ -82,6 +88,7 @@ class Button:
         if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
             return True
         return False
+
 
 class PuzzleGame:
     """Classe principale per il gioco del puzzle."""
@@ -176,6 +183,7 @@ class PuzzleGame:
         else:
             empty_row_from_bottom = self.rows - self.empty_pos[1]
             return (inversions + empty_row_from_bottom) % 2 == 1
+
 
 class Puzzle:
     """Classe per gestire il puzzle e l'interfaccia utente."""
@@ -317,6 +325,7 @@ class Puzzle:
         time.sleep(3)  # Aspetta un momento prima di tornare al menu principale
         self.difficulty_selection()
 
+
 async def main():
     """Funzione principale per avviare il gioco."""
     pygame.init()
@@ -329,6 +338,7 @@ async def main():
     user = "Player"  # Ottieni il nome utente loggato
     puzzle = Puzzle(screen, font, clock, user)
     puzzle.run()
+
 
 if __name__ == "__main__":
     asyncio.run(main())  # Esegui il gioco
