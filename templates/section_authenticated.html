@@ -1,21 +1,18 @@
+
 <!-- section_authenticated.html -->
+
 
 <link href="static/css/styles.css" rel="stylesheet" />
 <!-- Accesso ai contenuti riservati per l'utente loggato -->
 <div class="masthead-content" id="dynamic-section">
     {% block content %}
     {% endblock %}
-
     <!-- Content section 1 -->
     <section id="page-top">
         <div class="container-sm" id="masthead"><br><br>
             <div class="row gx-5 align-items-center">
                 <div class="col-lg-6 order-lg-2">
-                    <div class="p-5">
-                        <a href="/start_p" id="" >
-                            <img class="img-fluid rounded-circle" src="static/assets/img/01.jpg" alt="Puzzle Game" onclick="startGame()"/>
-                        </a>
-                    </div>
+                    <div class="p-5"><a href="#"><img class="img-fluid rounded-circle" src="static/assets/img/01.jpg" alt="Puzzle Game" id="load-p-btn"/></a></div>
                 </div>
                 <div class="col-lg-6 order-lg-1">
                     <div class="p-5">
@@ -26,58 +23,91 @@
             </div>
         </div>
     </section>
-
     <!-- Content section 2 -->
     <section>
         <div class="container-sm" id="masthead">
             <div class="row gx-5 align-items-center">
                 <div class="col-lg-6">
-                    <div class="p-5">
-                        <a href="#" id="load-m-btn">
-                            <img class="img-fluid rounded-circle" src="static/assets/img/02.jpg" alt="Download Memory Game" onclick="startMemory()" />
-                        </a>
-                    </div>
+                    <div class="p-5"><a href="#"><img class="img-fluid rounded-circle" src="static/assets/img/02.jpg" alt="Download Memory Game" id="load-m-btn"/></a></div> <!-- onclick="startMemory()" -->
                 </div>
                 <div class="col-lg-6">
                     <div class="p-5">
-                        <h2 class="display-4">Memory Game</h2>
+                        <h2 class="display-4">Memory game</h2>
                         <p>Metti a dura prova la tua memoria e trova le coppie di carte nel minor tempo possibile!!</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-</div>
+    </div>
+    <script src="static/js/scripts.js"></script>
+    <script>
+    
+    function loadPage(page_name) {
+        $.ajax({
+            type: 'GET',
+            url: '/' + page_name + '.html',
+            success: function(response) {
+                $("#content").html(response);
+                $(".masthead").hide(); // Nascondi l'header quando carichi il form
+            },
+            error: function(error) {
+                console.error('Errore durante il caricamento della pagina:', error);
+            }
+        });
+    }
+    //function loadDownloadPage(page) {
+    //    $.ajax({
+    //        url: '/' + page,  // Assicurati che la rotta corrispondente esista nel tuo app.py
+    //        type: 'GET',
+    //        success: function(response) {
+    //            $('#dynamic-section').html(response);  // Carica il contenuto della pagina nella sezione dinamica
+    //        },
+    //        error: function(error) {
+    //            console.error('Errore durante il caricamento della pagina:', error);
+    //            alert("Errore durante il caricamento della pagina");
+    //        }
+    //    });
+    //}
 
-<script src="static/js/scripts.js"></script>
-<script>
-    function startGame() {
-        fetch('/start_p', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
+    //$('#load-p-btn').click(function() {
+    //    loadDownloadPage('down_p');
+    //});
+
+    //$('#load-m-btn').click(function() {
+    //    loadDownloadPage('down_m');
+    //});
+
+
+    function downP() {
+        $.ajax({
+            type: 'GET',
+            url: '/down_p',  // Assicurati che questa rotta esista nel tuo app.py
+            success: function(response) {
+                console.log(response);
+               
+            },
+            error: function(error) {
+                console.error('Errore durante l\'apertura della pagina:', error);
+                alert("Errore durante l'avvio della pagina");
             }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.text(); // Ottieni il file HTML come testo
-            }
-            throw new Error('Errore nell\'avvio del gioco');
-        })
-        .then(html => {
-            // Mostra il contenuto HTML ricevuto
-            const gameWindow = window.open(); // Apri una nuova finestra o scheda
-            gameWindow.document.write(html); // Scrivi il contenuto HTML
-            gameWindow.document.close(); // Chiudi il documento per renderizzare il contenuto
-        })
-        .catch(error => {
-            console.error('Errore:', error);
-            alert('Si è verificato un errore durante l\'avvio del gioco. Per favore riprova.');
         });
     }
 
-    function startMemory() {
-        // Implementa qui la logica per avviare il Memory Game
-        alert('Funzionalità non implementata!'); // Placeholder
+    function downM() {
+        $.ajax({
+            type: 'GET',
+            url: '/down_m',  // Assicurati che questa rotta esista nel tuo app.py
+            success: function(response) {
+                console.log(response);
+               
+            },
+            error: function(error) {
+                console.error('Errore durante l\'apertura della pagina:', error);
+                alert("Errore durante l'avvio della pagina");
+            }
+        });
     }
-</script>
+
+    </script>
+    
