@@ -236,13 +236,16 @@ def logout():
     
 # Rotta per la pagina del Puzzle Game (download_p.html)
 @app.route('/down_p')
+@login_required
 def down_p():
     return render_template('download_p.html')
 
 # Rotta per la pagina del Memory Game (download_m.html)
 @app.route('/down_m')
+@login_required
 def down_m():
     return render_template('download_m.html')
+    
 # Nuova route per servire i file .wasm
 @app.route('/<path:filename>')
 @login_required
